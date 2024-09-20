@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokiri</title>
+    <!-- Other meta tags and links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background-color: #34495e;
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-family: 'TechFont', sans-serif; /* Tech-inspired font */
+            margin: 0;
+            font-size: 40px;
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        .scrolling-text {
+            color: white;
+            margin-top: 10px;
+            font-size: 18px;
+            text-align: center;
+            background-color: #34495e;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            top: 70px;
+            z-index: 999;
+        }
+
+        .scrolling-text a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .scrolling-text a:hover {
+            color: #1abc9c;
+        }
+
+        .signup-button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 20px;
+            font-size: 16px;
+            position: relative;
+        }
+
+        .main-content {
+            padding-top: 160px; /* Adjust based on header height */
+        }
+
+        .about-section {
+            padding: 50px;
+            text-align: center;
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .about-section h2 {
+            font-family: 'TechFont', sans-serif; /* Tech-inspired font */
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .tool-section {
+            padding: 50px;
+            text-align: center;
+        }
+
+        .tool-section h2 {
+            font-family: 'TechFont', sans-serif; /* Tech-inspired font */
+            margin-bottom: 40px;
+            font-size: 36px;
+            color: #2c3e50;
+        }
+
+        .tool-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .tool {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tool:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .tool h3 {
+            font-family: 'TechFont', sans-serif; /* Tech-inspired font */
+            font-size: 24px;
+            color: #34495e;
+            margin-top: 15px;
+        }
+
+        .tool p {
+            font-size: 16px;
+            font-family: 'ReadingFont', sans-serif; /* Reading-type font */
+            color: #7f8c8d;
+        }
+
+        .contact-section {
+            padding: 50px;
+            text-align: center;
+            background-color: #ecf0f1;
+        }
+
+        .contact-section h2 {
+            font-family: 'TechFont', sans-serif; /* Tech-inspired font */
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #2c3e50;
+        }
+
+        .contact-section p {
+            font-size: 16px;
+            font-family: 'ReadingFont', sans-serif; /* Reading-type font */
+            color: #7f8c8d;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        /* Stylish Logout Hover Menu */
+        #logout-menu {
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            display: none;
+            width: 150px;
+            text-align: center;
+        }
+
+        #logout-menu.visible {
+            display: block;
+        }
+
+        #logout-button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #logout-button:hover {
+            background-color: #c0392b;
+        }
+
+    .social-buttons {
+        margin-top: 20px;
+    }
+
+    .social-icon {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #34495e;
+        font-size: 24px;
+        transition: color 0.3s ease;
+    }
+
+    .social-icon:hover {
+        color: #1abc9c;
+    }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Pokiri</h1>
+        <button class="signup-button" id="login-button">Log In</button>
+        <div id="logout-menu">
+            <button id="logout-button">Logout</button>
+        </div>
+    </header>
+
+    <!-- Scrolling texts under header -->
+    <div class="scrolling-text">
+        <a href="#about">About Pokiri</a>
+        <a href="#tools">Tools</a>
+        <a href="#contact">Contact Us</a>
+    </div>
+
+    <div class="main-content">
+
+        <!-- About Section -->
+        <div id="about" class="about-section">
+            <h2>About Pokiri</h2>
+            <p>This site is filled with many tools. Here you can get them for free.</p>
+        </div>
+
+        <!-- Tools Section -->
+        <div id="tools" class="tool-section">
+            <h2>Tools</h2>
+            <div class="tool-container">
+                <div class="tool" id="ai-chat-tool">
+                    <h3>AI Chat</h3>
+                    <p>This is a free chatbot of Pokiri. Feel free to ask anything!</p>
+                </div>
+                <!-- Add more tool sections here if needed -->
+            </div>
+
+        <!-- Contact Section -->
+        <div id="contact" class="contact-section">
+            <h2>Contact Us</h2>
+            <p>For any inquiries or support, please reach out to us at <a href="mailto:circuitsaga@gmail.com">circuitsaga@gmail.com</a>.</p>
+    
+            <!-- Social Media Icons -->
+            <div class="social-buttons">
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/pokiri_v2?igshid=MTkwaWlzMjl1OTVpMg==" target="_blank" class="social-icon">
+                <i class="fab fa-instagram"></i>
+                </a>
+        
+            <!-- Telegram -->
+                <a href="https://t.me/pokiriv2_bot" target="_blank" class="social-icon">
+                <i class="fab fa-telegram-plane"></i>
+                </a>
+        
+            <!-- Discord -->
+                <a href="https://discord.com/oauth2/authorize?client_id=1237077251233681480&scope=applications.commands+bot&permissions=8&fbclid=PAZXh0bgNhZW0CMTEAAaYRLqzxPXgwVBbyaJfJERDWSR4G6YDqfGBdtZbXfuSfZirTv9aSrm9L--E_aem_hvbxVfKpxQ-LXYJ6lbr4dg" target="_blank" class="social-icon">
+                <i class="fab fa-discord"></i>
+                </a>
+            <!-- Android icon with alert -->
+                <i class="fab fa-android icon" onclick="showAlert()"></i>
+            </div>
+        </div>
+
+       <!-- Footer -->
+       <footer>
+           &copy; 2024 Gamenter95. All rights reserved.
+       </footer>
+
+    <script>
+        function showAlert() {
+            alert("We are working on it!");
+        }
+
+        // Scroll to sections with headings
+        document.querySelectorAll('.scrolling-text a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Redirect to login page or chatpokiri.html based on authentication
+        const loginButton = document.getElementById('login-button');
+        loginButton.addEventListener('click', function() {
+            if (loginButton.innerText === "Log In") {
+                window.location.href = 'login.html'; // Redirect to login page
+            } else {
+                toggleLogoutMenu();
+            }
+        });
+
+        // Load the username dynamically from localStorage
+        window.onload = function() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                loginButton.innerText = username;
+            }
+        };
+
+        // Toggle logout menu visibility
+        function toggleLogoutMenu() {
+            const logoutMenu = document.getElementById('logout-menu');
+            logoutMenu.classList.toggle('visible');
+        }
+
+        // Logout functionality
+        document.getElementById('logout-button').addEventListener('click', function() {
+            const confirmation = confirm('You are logging out...');
+            if (confirmation) {
+                localStorage.removeItem('username');
+                loginButton.innerText = 'Log In';
+                toggleLogoutMenu();
+            }
+        });
+
+        // Tool click handler to check authentication and redirect
+        const aiChatTool = document.getElementById('ai-chat-tool');
+        aiChatTool.addEventListener('click', function() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                window.location.href = 'chatpokiri.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>

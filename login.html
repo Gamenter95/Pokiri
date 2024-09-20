@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h2 {
+            margin-bottom: 10px;
+            font-family: 'TechFont', sans-serif;
+            color: #34495e;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #003d7a;
+        }
+        .hidden {
+            display: none;
+        }
+        .valid-check {
+            display: inline;
+            font-size: 20px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Login Section -->
+    <div id="login-section">
+        <h2>Log In</h2>
+        <input type="text" id="login-username-email" placeholder="Username/Email" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button id="login-button">Log In</button>
+        <p id="login-error" class="error-message hidden">Invalid username/email or password</p>
+        <p>Don't have an account? <span id="show-signup" style="color: blue; cursor: pointer;">Sign up!</span></p>
+    </div>
+
+    <!-- Sign Up Section -->
+    <div id="signup-section" class="hidden">
+        <h2>Sign Up</h2>
+        <input type="text" id="signup-username" placeholder="Username" required>
+        <span id="username-validity" class="valid-check"></span>
+        <p id="username-error" class="error-message hidden">Username must be at least 4 characters long</p>
+
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <p id="email-error" class="error-message hidden">Email must be a valid "@gmail.com" address</p>
+
+        <input type="password" id="signup-password" placeholder="Password" required>
+        <p id="password-error" class="error-message hidden">Password must be at least 6 characters and contain letters and numbers</p>
+
+        <button id="signup-button">Sign Up</button>
+        <p>Have an account? <span id="show-login" style="color: blue; cursor: pointer;">Log in!</span></p>
+    </div>
+</div>
+
+<script>
+    // DOM Elements
+    const loginSection = document.getElementById('login-section');
+    const signupSection = document.getElementById('signup-section');
+    const loginButton = document.getElementById('login-button');
+    const signupButton = document.getElementById('signup-button');
+    const loginError = document.getElementById('login-error');
+
+    const usernameInput = document.getElementById('signup-username');
+    const emailInput = document.getElementById('signup-email');
+    const passwordInput = document.getElementById('signup-password');
+    const usernameValidity = document.getElementById('username-validity');
+    const usernameError = document.getElementById('username-error');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+
+    // Toggle between Login and Sign Up sections
+    document.getElementById('show-signup').addEventListener('click', () => {
+        loginSection.classList.add('hidden');
+        signupSection.classList.remove('hidden');
+        resetSignUpErrors();
+    });
+
+    document.getElementById('show-login').addEventListener('click', () => {
+        signupSection.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+        resetLoginErrors();
+    });
+
+    // Reset error messages for login
+    function resetLoginErrors() {
+        loginError.classList.add('hidden');
+    }
+
+    // Reset error messages for sign-up
+    function resetSignUpErrors() {
+        usernameError.classList.add('hidden');
+        emailError.classList.add('hidden');
+        passwordError.classList.add('hidden');
+        usernameValidity.textContent = '';
+    }
+
+    // Username validation (Sign Up)
+    usernameInput.addEventListener('input', () => {
+        const username = usernameInput.value;
+        if (username.length < 4) {
+            usernameError.classList.remove('hidden');
+            usernameValidity.textContent = 'X';
+            usernameValidity.style.color = 'red';
+        } else {
+            usernameError.classList.add('hidden');
+            const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+            const usernameTaken = existingUsers.some(user => user.username === username);
+            if (usernameTaken) {
+                usernameValidity.textContent = 'X';
+                usernameValidity.style.color = 'red';
+            } else {
+                usernameValidity.textContent = '✓';
+                usernameValidity.style.color = 'green';
+            }
+        }
+    });
+
+    // Email validation (Sign Up)
+    emailInput.addEventListener('input', () => {
+        const email = emailInput.value;
+        if (!email.endsWith('@gmail.com')) {
+            emailError.classList.remove('hidden');
+        } else {
+            emailError.classList.add('hidden');
+        }
+    });
+
+    // Password validation (Sign Up)
+    passwordInput.addEventListener('input', () => {
+        const password = passwordInput.value;
+        const hasNumber = /\d/;
+        const hasLetter = /[a-zA-Z]/;
+        if (password.length < 6 || !hasNumber.test(password) || !hasLetter.test(password)) {
+            passwordError.classList.remove('hidden');
+        } else {
+            passwordError.classList.add('hidden');
+        }
+    });
+
+    // Login logic
+    loginButton.addEventListener('click', () => {
+        const loginUsernameEmail = document.getElementById('login-username-email').value;
+        const loginPassword = document.getElementById('login-password').value;
+
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(user => 
+            (user.username === loginUsernameEmail || user.email === loginUsernameEmail) && user.password === loginPassword
+        );
+
+        if (user) {
+            localStorage.setItem('username', user.username);
+            window.location.href = 'index.html';
+        } else {
+            loginError.classList.remove('hidden');
+        }
+    });
+
+    // Sign Up logic
+    signupButton.addEventListener('click', () => {
+        const username = usernameInput.value;
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        if (username.length >= 4 && email.endsWith('@gmail.com') && password.length >= 6) {
+            const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+            const usernameTaken = existingUsers.some(user => user.username === username);
+            const emailTaken = existingUsers.some(user => user.email === email);
+            
+            if (usernameTaken) {
+                usernameError.classList.remove('hidden');
+            } else if (emailTaken) {
+                emailError.classList.remove('hidden');
+            } else {
+                existingUsers.push({ username, email, password });
+                localStorage.setItem('users', JSON.stringify(existingUsers));
+                localStorage.setItem('username', username);
+                window.location.href = 'index.html';
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
